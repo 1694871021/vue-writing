@@ -1,4 +1,4 @@
-import { render } from './renderer.js';
+import { render } from './renderer/renderer.js';
 import { createVnode } from './createVnode.js';
 
 export const createApp = (rootComponent) => {

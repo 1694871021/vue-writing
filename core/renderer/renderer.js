@@ -1,12 +1,12 @@
-import { ShapeFlags } from './shapeFlags.js';
+import { ShapeFlags } from '../shapeFlags.js';
 import {
   hostCreateElement,
   hostSetElementText,
   hostPatchProp,
   hostInsert,
   hostRemove,
-} from "./hostApi.js";
-import { effect } from "../lib/mini-vue.esm.js";
+} from "../hostApi.js";
+import { effect } from "../../lib/mini-vue.esm.js";
 export const render = (vnode, container) => {
   patch(null, vnode, container);
 }
