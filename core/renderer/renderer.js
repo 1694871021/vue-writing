@@ -14,15 +14,18 @@ function patch(n1, n2, container) {
   // n1老节点，n2新节点
   // type为标签，shapeFlag类型怕判断标识
   const { type, shapeFlag } = n2;
+  console.log('基于vnode不同类型进行处理', type, shapeFlag, n2)
   switch (type) {
     case 'text':
       break;
     default:
       if (shapeFlag & ShapeFlags.ELEMENT) {
         // 处理Element
+        console.log('处理shapeFlag & ShapeFlags.ELEMENT', shapeFlag)
         processElement(n1, n2, container);
       } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
         // 处理组件component
+        console.log('处理shapeFlag & ShapeFlags.STATEFUL_COMPONENT', shapeFlag)
         processComponent(n1, n2, container);
       }
   }
@@ -43,6 +46,7 @@ function mountElement (vnode, container) {
   const { shapeFlag, props } = vnode;
   // 1. 先创建 element
   // 基于可扩展的渲染 api
+  console.log('初始化element, 调用hostCreateElement, 创造真实节点')
   const el = (vnode.el = hostCreateElement(vnode.type));
   // 2. 处理string类型和组件类型
   if(shapeFlag & ShapeFlags.TEXT_CHILDREN) {
@@ -59,6 +63,7 @@ function mountElement (vnode, container) {
     //     return h("div",{},[h("p"),h(Hello)])
     // }
     // 这里 children 就是个数组了，就需要依次调用 patch 递归来处理
+    console.log('初始化为数组的子节点, 调用patch函数进行循环')
     mountChildren(vnode.children, el);
   }
 
@@ -80,7 +85,6 @@ function mountElement (vnode, container) {
 //初始化子节点
 function mountChildren (children, container) {
   children.forEach(child => {
-    console.log("mountChildren:", child);
     patch(null, child, container);
   });
 }
@@ -91,7 +95,7 @@ function updateElement (n1, n2, container) {
   
   // 将老节点的dom实例赋给新节点
   const el = (n2.el = n1.el);
-
+  console.log('更新element', '旧节点', n1,  '新节点', n2)
   // 对比props
   patchProps(el, oldProps, newProps);
 
@@ -253,10 +257,11 @@ function processComponent (n1, n2, container) {
 
 function mountComponent (vnode, container) {
   // 1. 先创建一个 component instance
+  console.log('创建组件的instance对象');
   const instance = (vnode.component = createComponentInstance(vnode));
-
+  console.log('初始化props,setup,设置render函数');
   setupComponent(instance);
-
+  console.log('setupRenderEffect中调用effect(), 进行依赖收集');
   setupRenderEffect(instance, container);
 };
 
@@ -349,6 +354,7 @@ function setupRenderEffect (instance, container) {
         // 组件初始化调用
         // 这里的effect用于收集redner函数，在下一次数据变动的时候回执行该函数
         const subTree = (instance.subTree = instance.render(instance.proxy));
+        console.log("调用 render,获取 subTree", subTree);
         // 这里基于 subTree 再次调用 patch
         patch(null, subTree, container);
         instance.isMounted = true;
@@ -360,7 +366,7 @@ function setupRenderEffect (instance, container) {
 
         // 用新节点替换老节点,使之成为下一次变更的老节点
         instance.subTree = nextTree;
-
+        console.log("调用 render,获取 nextTree 更新节点", nextTree);
         // 触发 beforeUpdated hook
 
         patch(prevTree, nextTree, prevTree.el);
