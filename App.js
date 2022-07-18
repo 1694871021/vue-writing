@@ -7,6 +7,6 @@ export default {
     
   },
   render() {
-    return h("div", {style: "color:red"}, [h(Children)])
+    return h("div", null , [h(Children)])
   }
 }

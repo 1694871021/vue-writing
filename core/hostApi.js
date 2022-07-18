@@ -21,14 +21,23 @@ function hostPatchProp(el, key, preValue, nextValue) {
         el.setAttribute(key, nextValue);
       }
       break;
+    case "style":
+      el.setAttribute(key, nextValue);
+      break;
+      
     case 'onclick':
-      el.addEventListener('click', nextValue);  
+      if(!preValue) {
+        el.addEventListener('click', nextValue);  
+      }
+      break;
   }
 }
 
 // 插入子节点方法
 function hostInsert(child, parent, anchor = null) {
   if (parent) {
+    // insertBefore() 定义一个父节点parent，将child节点插入到 anchor节点之前，
+    // 如果anchor 为空 则将child最为最后一个子节点插入到parent
     parent.insertBefore(child, anchor);
   } else {
     parent.append(child);

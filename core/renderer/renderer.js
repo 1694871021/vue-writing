@@ -14,18 +14,15 @@ function patch(n1, n2, container) {
   // n1老节点，n2新节点
   // type为标签，shapeFlag类型怕判断标识
   const { type, shapeFlag } = n2;
-  console.log('基于vnode不同类型进行处理', type, shapeFlag, n2)
   switch (type) {
     case 'text':
       break;
     default:
       if (shapeFlag & ShapeFlags.ELEMENT) {
         // 处理Element
-        console.log('处理shapeFlag & ShapeFlags.ELEMENT', shapeFlag)
         processElement(n1, n2, container);
       } else if (shapeFlag & ShapeFlags.STATEFUL_COMPONENT) {
         // 处理组件component
-        console.log('处理shapeFlag & ShapeFlags.STATEFUL_COMPONENT', shapeFlag)
         processComponent(n1, n2, container);
       }
   }
@@ -195,7 +192,7 @@ function patchKeyedChildren (c1, c2, container) {
 
     const keyToNewIndexMap = new Map();
     // 先把 key 和 newIndex 绑定好，方便后续基于 key 找到 newIndex
-    for (let i = 0; i < e2; i++) {
+    for (let i = 0; i <= e2; i++) {
       const nextChild = c2[i];
       keyToNewIndexMap.set(nextChild.key, i);
     }
@@ -239,7 +236,7 @@ function patchKeyedChildren (c1, c2, container) {
       } else {
         // 有可能 i+1 没有元素 没有的话就直接设置为 null
         // 在 hostInsert 函数内如果发现是 null 的话，会直接添加到父级容器内
-        const anchor = i + 1 >= e2 + 1 ? null : c2[i + 1];
+        const anchor = i + 1 > e2 + 1 ? null : c2[i + 1];
         hostInsert(nextChild.el, container, anchor && anchor.el);
       }
     }
