@@ -25,6 +25,9 @@ function patch(n1, n2, container) {
         // 处理组件component
         processComponent(n1, n2, container);
       }
+
+
+      
   }
 }
 

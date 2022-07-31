@@ -11,4 +11,4 @@ vue实现过程的简单解析
 
 启动：
 1.从VSCode上下载 Live Server 插件，直接右键index.html选择 Live Server
-2.安装webpack-cli
+2.rollup启动

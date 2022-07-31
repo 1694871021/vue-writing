@@ -121,12 +121,11 @@ export default {
     return h("div", null, [
       h("button",
         {
-          style: "color:red",
           onclick: ()=> {
             change.value = !change.value;
           }
         },
-        "change事件------"
+        "change事件"
       ),
       h("div", { style: "height: 100px;"} , change.value ? prevChildren: nextChildren)
     ])
